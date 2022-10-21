@@ -1,4 +1,4 @@
-# Deploy Static webstie to S3
+# Deploy Static Website to S3
 
 스토리북 배포 작업을 테스트 해보기 위해 만든 예제입니다. 정적 웹사이트를 S3를 이용하여 배포합니다.
 
