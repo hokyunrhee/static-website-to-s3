@@ -25,7 +25,20 @@
 npm install -g serverless
 ```
 
-**S3 만들기**
+**AWS CLI Profile 등록**
+
+```bash
+aws configure --profile <profile>
+```
+
+**Profile 목록 확인**
+
+```bash
+aws configure list-profiles
+```
+
+**S3 만들기**  
+IAM 권한은 S3와 CloudFormation이 필요합니다.
 
 ```bash
 serverless deploy --aws-profile <profile>

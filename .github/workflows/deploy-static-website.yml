@@ -16,7 +16,7 @@ jobs:
       BUCKET_NAME: static-website-to-s3
       REGION: ap-northeast-2
       SOURCE: ./dist
-      
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -35,4 +35,4 @@ jobs:
         aws-region: ${{ env.REGION }}
 
     - name: Copy files to the Bucket with the AWS CLI
-      run: aws s3 sync ${{ env.SOURCE}} s3://${{ env.BUCKET_NAME }} --delete
+      run: aws s3 sync ${{ env.SOURCE }} s3://${{ env.BUCKET_NAME }} --delete
