@@ -1,0 +1,47 @@
+service: static-website-to-s3
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  profile: serverlessUser
+  region: ap-northeast-2 
+
+resources:
+  Resources:
+    StaticSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:service}-${sls:stage}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+    StaticSiteBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: StaticSite
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+                Fn::Join: [
+                  "", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": StaticSite
+                    },
+                    "/*"
+                  ]
+                ]
+
+plugins:
+  - serverless-s3-sync
+
+custom:
+  s3Sync:
+    - bucketName: StaticSite
+      localDir: dist
