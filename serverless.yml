@@ -8,18 +8,18 @@ provider:
 
 resources:
   Resources:
-    StaticSite:
+    StaticWebsite:
       Type: AWS::S3::Bucket
       Properties:
         AccessControl: PublicRead
-        BucketName: ${self:service}-${sls:stage}
+        BucketName: ${self:service}
         WebsiteConfiguration:
           IndexDocument: index.html
-    StaticSiteBucketPolicy:
+    StaticWebsiteBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket:
-          Ref: StaticSite
+          Ref: StaticWebsite
         PolicyDocument:
           Statement:
             - Effect: Allow
@@ -31,16 +31,8 @@ resources:
                   "", [
                     "arn:aws:s3:::",
                     {
-                      "Ref": StaticSite
+                      "Ref": StaticWebsite
                     },
                     "/*"
                   ]
                 ]
-
-plugins:
-  - serverless-s3-sync
-
-custom:
-  s3Sync:
-    - bucketName: StaticSite
-      localDir: dist
