@@ -9,30 +9,24 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     env:
       BUCKET_NAME: static-website-to-s3
       REGION: ap-northeast-2
       SOURCE: ./dist
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-      run: npm ci
+      - name: Install
+        run: npm ci
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.REGION }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.REGION }}
 
-    - name: Copy files to the Bucket with the AWS CLI
-      run: aws s3 sync ${{ env.SOURCE }} s3://${{ env.BUCKET_NAME }} --delete
+      - name: Copy files to the Bucket with the AWS CLI
+        run: aws s3 sync ${{ env.SOURCE }} s3://${{ env.BUCKET_NAME }} --delete
